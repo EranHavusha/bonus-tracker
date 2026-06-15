@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>יעדים ובונוסים — החנות</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700;900&display=swap');
+
+  :root {
+    --green:  #1B8A4C;
+    --green2: #25B265;
+    --gold:   #F5A623;
+    --orange: #E8621A;
+    --bg:     #0F1923;
+    --card:   #172130;
+    --card2:  #1E2D3E;
+    --text:   #F0F4F8;
+    --muted:  #7A8FA0;
+    --border: #243547;
+    --red:    #E84040;
+  }
+
+  /* Prevent iOS zoom on focus */
+  input[type="number"], input[type="date"] { font-size: max(16px, 1em); }
+  /* Smooth touch on buttons */
+  button { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .screen { -webkit-overflow-scrolling: touch; }
+
+
+  body {
+    font-family: 'Heebo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    direction: rtl;
+  }
+
+  .screen { display: none; padding: 24px 16px 60px; }
+  .screen.active { display: block; }
+  .container { max-width: 560px; margin: 0 auto; }
+
+  /* ── HEADER ── */
+  .header { text-align: center; margin-bottom: 22px; }
+  .month-badge {
+    display: inline-block; background: var(--green); color: white;
+    font-size: 14px; font-weight: 700; padding: 5px 18px;
+    border-radius: 20px; margin-bottom: 10px;
+  }
+  .header h1 { font-size: 24px; font-weight: 900; }
+  .header .sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  /* ── PIN ── */
+  #pinScreen {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; min-height: 100vh;
+    gap: 22px; padding: 24px;
+  }
+  #pinScreen.active { display: flex; }
+  .pin-icon { font-size: 44px; }
+  .pin-title { font-size: 20px; font-weight: 900; }
+  .pin-sub   { font-size: 13px; color: var(--muted); }
+  .pin-dots  { display: flex; gap: 14px; }
+  .pin-dot {
+    width: 15px; height: 15px; border-radius: 50%;
+    border: 2px solid var(--border); background: transparent;
+    transition: background .15s, border-color .15s;
+  }
+  .pin-dot.filled { background: var(--green2); border-color: var(--green2); }
+  .pin-dot.error  { background: var(--red);    border-color: var(--red); }
+  .pin-error { font-size: 13px; color: var(--red); font-weight: 600; min-height: 18px; }
+  .pin-pad { display: grid; grid-template-columns: repeat(3, 72px); gap: 12px; }
+  .pin-btn {
+    width: 72px; height: 72px; border-radius: 50%;
+    border: 1.5px solid var(--border); background: var(--card);
+    color: var(--text); font-family: 'Heebo', sans-serif;
+    font-size: 24px; font-weight: 700; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s, transform .1s;
+  }
+  .pin-btn:hover  { background: var(--card2); }
+  .pin-btn:active { transform: scale(.93); }
+  .pin-btn.del    { font-size: 18px; color: var(--muted); }
+  .pin-btn.empty  { border: none; background: transparent; pointer-events: none; }
+
+  /* ── DAYS BAR ── */
+  .days-bar {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 14px 20px; margin-bottom: 14px;
+    display: flex; text-align: center;
+  }
+  .days-item { flex: 1; padding: 0 6px; }
+  .days-item + .days-item { border-right: 1px solid var(--border); }
+  .days-label { font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 3px; }
+  .days-val   { font-size: 24px; font-weight: 900; }
+  .days-val.hi { color: #4AE080; }
+  .days-sub   { font-size: 11px; color: var(--muted); }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px; margin-bottom: 14px;
+  }
+  .card h2 {
+    font-size: 12px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px;
+  }
+
+  /* ── INPUT ── */
+  .input-row { display: flex; gap: 10px; align-items: flex-end; }
+  .input-group { flex: 1; }
+  .input-group label { display: block; font-size: 13px; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+  .input-group input {
+    width: 100%; background: var(--card2); border: 1.5px solid var(--border);
+    border-radius: 10px; color: var(--text); font-family: 'Heebo', sans-serif;
+    font-size: 20px; font-weight: 900; padding: 12px 14px; outline: none;
+    transition: border-color .2s; direction: ltr; text-align: right;
+  }
+  .input-group input:focus { border-color: var(--green2); }
+
+  .add-btn {
+    background: linear-gradient(135deg, var(--green), var(--green2));
+    color: white; border: none; border-radius: 10px; font-family: 'Heebo', sans-serif;
+    font-size: 15px; font-weight: 700; padding: 13px 20px; cursor: pointer;
+    white-space: nowrap; transition: opacity .2s;
+    height: 52px; display: flex; align-items: center;
+  }
+  .add-btn:hover { opacity: .9; }
+
+  /* ── LOG ── */
+  .log-list { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+  .log-item {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--card2); border-radius: 10px; padding: 10px 14px;
+    font-size: 14px;
+  }
+  .log-date  { color: var(--muted); font-size: 13px; }
+  .log-amt   { font-weight: 700; color: var(--green2); }
+  .log-del   {
+    background: none; border: none; color: var(--muted); cursor: pointer;
+    font-size: 16px; padding: 2px 6px; border-radius: 6px; transition: color .15s;
+  }
+  .log-del:hover { color: var(--red); }
+  .log-empty { font-size: 13px; color: var(--muted); text-align: center; padding: 12px 0; }
+
+  /* ── DAILY TARGET ── */
+  .daily-card {
+    background: linear-gradient(135deg, #1A3A28, #0F2A1E);
+    border: 1.5px solid var(--green); border-radius: 16px;
+    padding: 20px; margin-bottom: 14px; text-align: center;
+  }
+  .daily-label  { font-size: 13px; color: #6DBF8E; font-weight: 600; margin-bottom: 4px; }
+  .daily-amount { font-size: 48px; font-weight: 900; color: #4AE080; letter-spacing: -2px; line-height: 1; margin-bottom: 4px; }
+  .daily-sub    { font-size: 13px; color: #6DBF8E; }
+
+  /* ── SUMMARY ── */
+  .summary-row {
+    display: flex; gap: 0; text-align: center; margin-bottom: 14px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px 20px;
+  }
+  .s-item { flex: 1; padding: 0 8px; }
+  .s-item + .s-item { border-right: 1px solid var(--border); }
+  .s-label { font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 3px; }
+  .s-val   { font-size: 20px; font-weight: 900; }
+  .s-sub   { font-size: 11px; color: var(--muted); }
+
+  /* ── MOTIVATION ── */
+  .motivation {
+    background: linear-gradient(135deg, #1A2010, #172130);
+    border: 1px solid #2A4020; border-radius: 12px;
+    padding: 13px 18px; text-align: center;
+    font-size: 15px; font-weight: 700; color: #7ADF9A;
+    line-height: 1.5; margin-bottom: 18px;
+  }
+
+  /* ── MILESTONES ── */
+  .section-title {
+    font-size: 12px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;
+  }
+  .milestones { display: flex; flex-direction: column; gap: 10px; }
+  .milestone {
+    background: var(--card); border: 1.5px solid var(--border);
+    border-radius: 14px; padding: 14px 16px;
+  }
+  .milestone.reached { border-color: var(--green); background: linear-gradient(135deg, #172E20, #172130); }
+  .milestone.current { border-color: var(--gold);  background: linear-gradient(135deg, #2A2010, #172130); }
+  .ms-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .ms-name { font-size: 14px; font-weight: 700; }
+  .ms-bonus {
+    font-size: 12px; font-weight: 700; padding: 3px 10px;
+    border-radius: 20px; background: var(--card2); color: var(--gold);
+  }
+  .milestone.reached .ms-bonus { background: rgba(27,138,76,.3); color: #4AE080; }
+  .bar-track { background: var(--card2); border-radius: 6px; height: 9px; overflow: hidden; margin-bottom: 6px; }
+  .bar-fill  { height: 100%; border-radius: 6px; transition: width 1s cubic-bezier(.4,0,.2,1); }
+  .bar-fill.green  { background: linear-gradient(90deg, var(--green), var(--green2)); }
+  .bar-fill.gold   { background: linear-gradient(90deg, var(--gold),  #FFD166); }
+  .bar-fill.orange { background: linear-gradient(90deg, var(--orange), #FF9A3C); }
+  .bar-fill.done   { background: linear-gradient(90deg, #1B8A4C, #4AE080); }
+  .bar-pct { font-size: 12px; font-weight: 700; color: var(--text); }
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12px; font-weight: 700; padding: 2px 9px;
+    border-radius: 10px; margin-top: 5px;
+  }
+  .status-badge.reached { background: rgba(27,138,76,.25); color: #4AE080; }
+  .status-badge.active  { background: rgba(245,166,35,.2);  color: var(--gold); }
+  .status-badge.ahead   { background: rgba(255,255,255,.06); color: var(--muted); }
+
+  /* ── BUTTONS ── */
+  .ghost-btn {
+    width: 100%; background: transparent; border: 1px solid var(--border);
+    color: var(--muted); font-family: 'Heebo', sans-serif; font-size: 14px;
+    font-weight: 600; padding: 12px; border-radius: 10px; cursor: pointer;
+    margin-top: 10px; transition: border-color .2s, color .2s;
+  }
+  .ghost-btn:hover { border-color: var(--muted); color: var(--text); }
+
+  /* ── TEAM VIEW specific ── */
+  .team-pct-big {
+    text-align: center; padding: 28px 0 20px;
+  }
+  .team-pct-num {
+    font-size: 80px; font-weight: 900; line-height: 1;
+    background: linear-gradient(135deg, #25B265, #4AE080);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .team-pct-label { font-size: 16px; color: var(--muted); margin-top: 6px; font-weight: 600; }
+
+  .team-bars { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+  .team-bar-item { }
+  .team-bar-label {
+    display: flex; justify-content: space-between;
+    font-size: 13px; font-weight: 700; margin-bottom: 6px;
+  }
+  .team-bar-pct { color: var(--muted); }
+  .team-bar-track { background: var(--card2); border-radius: 8px; height: 14px; overflow: hidden; }
+  .team-bar-fill  { height: 100%; border-radius: 8px; transition: width 1.2s cubic-bezier(.4,0,.2,1); }
+
+  .team-days-note {
+    text-align: center; font-size: 14px; color: var(--muted);
+    font-weight: 600; margin-bottom: 18px;
+  }
+
+  /* secret tap zone */
+  .tap-zone {
+    position: fixed; bottom: 0; left: 0;
+    width: 60px; height: 60px;
+    cursor: default;
+  }
+
+  @media (max-width: 480px) {
+    #pinScreen { gap: 18px; }
+    .pin-pad { grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 300px; }
+    .pin-btn { width: 100%; height: 76px; font-size: 26px; border-radius: 16px; }
+    .pin-dot { width: 14px; height: 14px; }
+
+    .screen { padding: 16px 12px 80px; }
+    .header h1 { font-size: 20px; }
+    .card { padding: 16px 14px; }
+
+    .days-bar { padding: 12px 10px; }
+    .days-val { font-size: 20px; }
+    .days-label, .days-sub { font-size: 10px; }
+
+    .input-row { flex-direction: column; gap: 10px; }
+    .add-btn { width: 100%; height: 54px; justify-content: center; font-size: 16px; }
+    .input-group input { font-size: 22px; padding: 14px; }
+
+    .log-item { padding: 12px; font-size: 15px; }
+
+    .daily-amount { font-size: 42px; }
+    .daily-card { padding: 18px 14px; }
+
+    .summary-row { padding: 12px 10px; }
+    .s-val { font-size: 18px; }
+
+    .ms-top { flex-wrap: wrap; gap: 6px; }
+    .ms-bonus { font-size: 11px; }
+
+    .team-pct-num { font-size: 68px; }
+    .team-bar-track { height: 16px; border-radius: 8px; }
+    .team-bar-label { font-size: 14px; }
+
+    .ghost-btn { padding: 14px; font-size: 15px; margin-top: 8px; }
+    .tap-zone { width: 80px; height: 80px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ PIN SCREEN ══════════ -->
+<div id="pinScreen" class="active">
+  <div class="pin-icon">🔒</div>
+  <div class="pin-title">הזנת נתוני מכירות</div>
+  <div class="pin-sub">הכנס קוד כניסה</div>
+  <div class="pin-dots">
+    <div class="pin-dot" id="d0"></div>
+    <div class="pin-dot" id="d1"></div>
+    <div class="pin-dot" id="d2"></div>
+    <div class="pin-dot" id="d3"></div>
+  </div>
+  <div class="pin-error" id="pinError"></div>
+  <div class="pin-pad">
+    <button class="pin-btn" onclick="pinPress('1')">1</button>
+    <button class="pin-btn" onclick="pinPress('2')">2</button>
+    <button class="pin-btn" onclick="pinPress('3')">3</button>
+    <button class="pin-btn" onclick="pinPress('4')">4</button>
+    <button class="pin-btn" onclick="pinPress('5')">5</button>
+    <button class="pin-btn" onclick="pinPress('6')">6</button>
+    <button class="pin-btn" onclick="pinPress('7')">7</button>
+    <button class="pin-btn" onclick="pinPress('8')">8</button>
+    <button class="pin-btn" onclick="pinPress('9')">9</button>
+    <button class="pin-btn empty"></button>
+    <button class="pin-btn" onclick="pinPress('0')">0</button>
+    <button class="pin-btn del" onclick="pinDel()">⌫</button>
+  </div>
+</div>
+
+<!-- ══════════ MANAGER SCREEN ══════════ -->
+<div id="managerScreen" class="screen">
+<div class="container">
+
+  <div class="header">
+    <div class="month-badge" id="mgr-monthBadge">—</div>
+    <h1>⚙️ הזנת מכירות יומיות</h1>
+    <div class="sub">הנתונים נשמרים אוטומטית</div>
+  </div>
+
+  <div class="days-bar">
+    <div class="days-item">
+      <div class="days-label">ימי עבודה בחודש</div>
+      <div class="days-val" id="mgr-totalDays">—</div>
+      <div class="days-sub">ללא שבתות וחגים</div>
+    </div>
+    <div class="days-item">
+      <div class="days-label">עברו</div>
+      <div class="days-val" id="mgr-passedDays">—</div>
+      <div class="days-sub">ימים</div>
+    </div>
+    <div class="days-item">
+      <div class="days-label">נשארו</div>
+      <div class="days-val hi" id="mgr-leftDays">—</div>
+      <div class="days-sub">כולל היום</div>
+    </div>
+  </div>
+
+  <!-- Entry -->
+  <div class="card">
+    <h2>הוספת יום</h2>
+    <div class="input-row">
+      <div class="input-group">
+        <label>תאריך</label>
+        <input type="date" id="entryDate">
+      </div>
+      <div class="input-group">
+        <label>מכירות ביום (כולל מע"מ)</label>
+        <input type="number" id="entryAmt" placeholder="8,500" inputmode="numeric">
+      </div>
+      <button class="add-btn" onclick="addEntry()">+ הוסף</button>
+    </div>
+    <div id="entryError" style="font-size:13px;color:var(--red);margin-top:8px;min-height:18px;"></div>
+  </div>
+
+  <!-- Log -->
+  <div class="card">
+    <h2>יומן מכירות — <span id="mgr-monthName">—</span></h2>
+    <div class="log-list" id="logList"></div>
+  </div>
+
+  <!-- Results -->
+  <div id="mgr-results">
+    <div class="daily-card">
+      <div class="daily-label" id="mgr-dailyLabel">יעד יומי</div>
+      <div class="daily-amount" id="mgr-dailyAmount">—</div>
+      <div class="daily-sub" id="mgr-dailySub"></div>
+    </div>
+
+    <div class="summary-row">
+      <div class="s-item">
+        <div class="s-label">סה"כ מצטבר</div>
+        <div class="s-val" id="mgr-total">—</div>
+        <div class="s-sub">₪ כולל מע"מ</div>
+      </div>
+      <div class="s-item">
+        <div class="s-label">ממוצע יומי</div>
+        <div class="s-val" id="mgr-avg">—</div>
+        <div class="s-sub">₪ כולל מע"מ</div>
+      </div>
+    </div>
+
+    <div class="motivation" id="mgr-motivation"></div>
+
+    <div class="section-title">מדרגות הבונוס</div>
+    <div class="milestones" id="mgr-milestones"></div>
+  </div>
+
+  <button class="ghost-btn" onclick="goTeam()">👁 מעבר לתצוגת צוות</button>
+  <button class="ghost-btn" onclick="lockApp()">🔒 נעל ויצא</button>
+
+</div>
+</div>
+
+<!-- ══════════ TEAM SCREEN ══════════ -->
+<div id="teamScreen" class="screen">
+<div class="container">
+
+  <div class="header">
+    <div class="month-badge" id="team-monthBadge">—</div>
+    <h1>🎯 יעדים ובונוסים</h1>
+    <div class="sub" id="team-daysNote">—</div>
+  </div>
+
+  <!-- Big % toward next milestone -->
+  <div class="card">
+    <div class="team-pct-big">
+      <div class="team-pct-num" id="team-bigPct">—%</div>
+      <div class="team-pct-label" id="team-bigLabel">התקדמות לקראת המדרגה הבאה</div>
+    </div>
+    <div class="motivation" id="team-motivation" style="margin-bottom:0;"></div>
+  </div>
+
+  <!-- All milestone bars -->
+  <div class="card">
+    <h2>מדרגות הבונוס</h2>
+    <div class="team-bars" id="team-bars"></div>
+  </div>
+
+  <!-- Daily target -->
+  <div class="daily-card" id="team-dailyCard">
+    <div class="daily-label" id="team-dailyLabel">יעד יומי</div>
+    <div class="daily-amount" id="team-dailyAmount">—</div>
+    <div class="daily-sub">₪ כולל מע"מ ליום</div>
+  </div>
+
+  <!-- Days remaining -->
+  <div class="card" style="text-align:center;padding:18px;">
+    <div class="days-label" style="margin-bottom:6px;">ימי עבודה שנשארו בחודש</div>
+    <div class="days-val hi" id="team-daysLeft" style="font-size:40px;">—</div>
+  </div>
+
+</div>
+<!-- secret tap zone — bottom-left corner, 5 taps to go to manager -->
+<div class="tap-zone" id="tapZone" onclick="secretTap()"></div>
+</div>
+
+<script>
+// ══════════ CONFIG ══════════
+const PIN = '3008';
+const VAT = 1.18;
+const MONTHS_HE = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני',
+                   'יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+
+const TIERS = [
+  { target: 260000, bonus: 2000,  label: 'מדרגה ראשונה', color: 'green' },
+  { target: 280000, bonus: 6000,  label: 'מדרגה שנייה',  color: 'green' },
+  { target: 300000, bonus: 10000, label: 'מדרגה שלישית', color: 'gold'  },
+  { target: 320000, bonus: 14000, label: 'מדרגה רביעית', color: 'gold'  },
+  { target: 330000, bonus: 18000, label: 'מדרגה חמישית', color: 'orange'},
+];
+
+const MOTIVATIONS_LOW  = ["כל מכירה מקרבת אתכם לבונוס! 🚀","הצוות עושה עבודה מדהימה! ⭐","כל לקוח הוא הזדמנות! 🌟","ביחד נגיע לשם! 💪"];
+const MOTIVATIONS_MID  = ["אתם על המסלול — תמשיכו! 💪","קצב טוב! עוד קצת ומגיעים! 🎯","ממשיכים להתקדם — כל יום נחשב! 📈"];
+const MOTIVATIONS_HIGH = ["🔥 כמעט שם! עוד קצת ומגיעים לבונוס!","🔥 סוף השבוע הולך להיות טוב מאוד!"];
+const MOTIVATIONS_DONE = ["🏆 יוצא מן הכלל! עברתם את כל המדרגות!","🏆 הצוות מדהים — ביצועים יוצאי דופן!"];
+
+function pickMotivation(pctToNext, allDone) {
+  if(allDone)          return MOTIVATIONS_DONE[Math.floor(Math.random()*MOTIVATIONS_DONE.length)];
+  if(pctToNext > 85)   return MOTIVATIONS_HIGH[Math.floor(Math.random()*MOTIVATIONS_HIGH.length)];
+  if(pctToNext > 55)   return MOTIVATIONS_MID[Math.floor(Math.random()*MOTIVATIONS_MID.length)];
+  return MOTIVATIONS_LOW[Math.floor(Math.random()*MOTIVATIONS_LOW.length)];
+}
+
+// ══════════ CALENDAR ══════════
+const HOLIDAYS = new Set([
+  '2026-04-03','2026-04-04','2026-04-09','2026-04-10',
+  '2026-05-22','2026-05-23',
+  '2026-09-11','2026-09-12','2026-09-20',
+  '2026-09-25','2026-09-26','2026-10-02','2026-10-03',
+]);
+function pad(n){ return String(n).padStart(2,'0'); }
+function dateKey(d){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
+function isWorkDay(d){ return d.getDay() !== 6 && !HOLIDAYS.has(dateKey(d)); }
+
+function monthWorkDays(year, month) {
+  const d = new Date(year, month, 1); let n = 0;
+  while(d.getMonth()===month){ if(isWorkDay(d)) n++; d.setDate(d.getDate()+1); }
+  return n;
+}
+function remainingWorkDays(year, month) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const d = new Date(today); let n = 0;
+  while(d.getMonth()===month){ if(isWorkDay(d)) n++; d.setDate(d.getDate()+1); }
+  return n;
+}
+function passedWorkDays(year, month) {
+  return monthWorkDays(year,month) - remainingWorkDays(year,month);
+}
+
+// ══════════ STORAGE ══════════
+function storageKey(year, month){
+  return `sales_${year}_${pad(month+1)}`;
+}
+function loadEntries(){
+  const now = new Date();
+  try {
+    const raw = localStorage.getItem(storageKey(now.getFullYear(), now.getMonth()));
+    return raw ? JSON.parse(raw) : {};
+  } catch(e){ return {}; }
+}
+function saveEntries(entries){
+  const now = new Date();
+  localStorage.setItem(storageKey(now.getFullYear(), now.getMonth()), JSON.stringify(entries));
+}
+function totalSalesGross(entries){
+  return Object.values(entries).reduce((s,v)=>s+v, 0);
+}
+
+// ══════════ PIN ══════════
+let pinEntry = '';
+function updateDots(error){
+  for(let i=0;i<4;i++){
+    const d=document.getElementById('d'+i);
+    d.className='pin-dot';
+    if(error) d.classList.add('error');
+    else if(i<pinEntry.length) d.classList.add('filled');
+  }
+}
+function pinPress(n){
+  if(pinEntry.length>=4) return;
+  document.getElementById('pinError').textContent='';
+  pinEntry+=n; updateDots(false);
+  if(pinEntry.length===4){
+    setTimeout(()=>{
+      if(pinEntry===PIN){ showManager(); }
+      else {
+        updateDots(true);
+        document.getElementById('pinError').textContent='קוד שגוי — נסה שוב';
+        setTimeout(()=>{ pinEntry=''; updateDots(false); }, 900);
+      }
+    },150);
+  }
+}
+function pinDel(){
+  document.getElementById('pinError').textContent='';
+  if(pinEntry.length>0){ pinEntry=pinEntry.slice(0,-1); updateDots(false); }
+}
+document.addEventListener('keydown', e=>{
+  if(!document.getElementById('pinScreen').classList.contains('active')) return;
+  if(e.key>='0'&&e.key<='9') pinPress(e.key);
+  if(e.key==='Backspace') pinDel();
+});
+
+// ══════════ SCREENS ══════════
+function showScreen(id){
+  ['pinScreen','managerScreen','teamScreen'].forEach(s=>{
+    const el=document.getElementById(s);
+    el.classList.remove('active');
+    if(el.classList.contains('screen')) el.style.display='none';
+    else el.style.display='none';
+  });
+  const target=document.getElementById(id);
+  target.classList.add('active');
+  if(target.classList.contains('screen')) target.style.display='block';
+  else target.style.display='flex';
+}
+
+function lockApp(){
+  pinEntry=''; updateDots(false);
+  document.getElementById('pinError').textContent='';
+  showScreen('pinScreen');
+}
+
+function goTeam(){
+  renderTeam();
+  showScreen('teamScreen');
+}
+
+function showManager(){
+  showScreen('managerScreen');
+  initManager();
+}
+
+// ══════════ MANAGER ══════════
+function initManager(){
+  const now   = new Date();
+  const year  = now.getFullYear();
+  const month = now.getMonth();
+
+  const total  = monthWorkDays(year,month);
+  const passed = passedWorkDays(year,month);
+  const left   = remainingWorkDays(year,month);
+
+  document.getElementById('mgr-monthBadge').textContent = MONTHS_HE[month]+' '+year;
+  document.getElementById('mgr-monthName').textContent  = MONTHS_HE[month];
+  document.getElementById('mgr-totalDays').textContent  = total;
+  document.getElementById('mgr-passedDays').textContent = passed;
+  document.getElementById('mgr-leftDays').textContent   = left;
+
+  // default date = today
+  document.getElementById('entryDate').value = dateKey(now);
+
+  renderLog();
+  renderMgrResults();
+}
+
+function addEntry(){
+  const dateVal = document.getElementById('entryDate').value;
+  const amtVal  = parseFloat(document.getElementById('entryAmt').value);
+  const errEl   = document.getElementById('entryError');
+
+  if(!dateVal){ errEl.textContent='בחר תאריך'; return; }
+  if(!amtVal||amtVal<=0){ errEl.textContent='הכנס סכום תקין'; return; }
+  errEl.textContent='';
+
+  const entries = loadEntries();
+  entries[dateVal] = amtVal;
+  saveEntries(entries);
+  document.getElementById('entryAmt').value='';
+  renderLog();
+  renderMgrResults();
+}
+
+function deleteEntry(dateVal){
+  const entries = loadEntries();
+  delete entries[dateVal];
+  saveEntries(entries);
+  renderLog();
+  renderMgrResults();
+}
+
+function renderLog(){
+  const entries = loadEntries();
+  const keys    = Object.keys(entries).sort().reverse();
+  const list    = document.getElementById('logList');
+
+  if(keys.length===0){
+    list.innerHTML='<div class="log-empty">אין נתונים עדיין — הוסף את היום הראשון</div>';
+    return;
+  }
+
+  const fmt = n => Math.round(n).toLocaleString('he-IL');
+  list.innerHTML = keys.map(k=>{
+    const d = new Date(k+'T12:00:00');
+    const dayNames = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+    const label = `${dayNames[d.getDay()]} ${d.getDate()}/${d.getMonth()+1}`;
+    return `<div class="log-item">
+      <span class="log-date">${label}</span>
+      <span class="log-amt">₪${fmt(entries[k])}</span>
+      <button class="log-del" onclick="deleteEntry('${k}')" title="מחק">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function renderMgrResults(){
+  const now     = new Date();
+  const month   = now.getMonth();
+  const entries = loadEntries();
+  const grossTotal = totalSalesGross(entries);
+  const netTotal   = grossTotal / VAT;
+  const passed     = passedWorkDays(now.getFullYear(), month);
+  const left       = remainingWorkDays(now.getFullYear(), month);
+  const fmt        = n => Math.round(n).toLocaleString('he-IL');
+
+  document.getElementById('mgr-total').textContent = fmt(grossTotal);
+  const avgGross = passed>0 ? grossTotal/passed : 0;
+  document.getElementById('mgr-avg').textContent = fmt(avgGross);
+
+  // Next tier
+  let nextTier=null, nextIdx=-1;
+  for(let i=0;i<TIERS.length;i++){
+    if(netTotal<TIERS[i].target){ nextTier=TIERS[i]; nextIdx=i; break; }
+  }
+
+  if(nextTier && left>0){
+    const neededNet   = (nextTier.target - netTotal) / left;
+    const neededGross = neededNet * VAT;
+    document.getElementById('mgr-dailyLabel').textContent  = `יעד יומי — ${nextTier.label}`;
+    document.getElementById('mgr-dailyAmount').textContent = fmt(neededGross);
+    document.getElementById('mgr-dailySub').textContent    = '₪ כולל מע"מ ליום';
+  } else if(!nextTier){
+    document.getElementById('mgr-dailyLabel').textContent  = 'עברתם את כל המדרגות!';
+    document.getElementById('mgr-dailyAmount').textContent = '🏆';
+    document.getElementById('mgr-dailySub').textContent    = '';
+  } else {
+    document.getElementById('mgr-dailyAmount').textContent = '—';
+    document.getElementById('mgr-dailyLabel').textContent  = 'יעד יומי';
+    document.getElementById('mgr-dailySub').textContent    = '';
+  }
+
+  // Motivation
+  const pctToNext = nextTier
+    ? Math.round(((netTotal-(nextIdx>0?TIERS[nextIdx-1].target:0))/(nextTier.target-(nextIdx>0?TIERS[nextIdx-1].target:0)))*100)
+    : 100;
+  document.getElementById('mgr-motivation').textContent = pickMotivation(pctToNext, !nextTier);
+
+  // Milestones
+  const cont = document.getElementById('mgr-milestones');
+  cont.innerHTML='';
+  TIERS.forEach((tier,idx)=>{
+    const pct      = Math.min(100, Math.round((netTotal/tier.target)*100));
+    const reached  = netTotal>=tier.target;
+    const isCurrent= !reached&&(idx===0||netTotal>=TIERS[idx-1].target);
+    const barClass = reached?'done':tier.color;
+    const div=document.createElement('div');
+    div.className='milestone'+(reached?' reached':isCurrent?' current':'');
+    div.innerHTML=`
+      <div class="ms-top">
+        <div class="ms-name">${tier.label}</div>
+        <div class="ms-bonus">בונוס ₪${fmt(tier.bonus)}</div>
+      </div>
+      <div class="bar-track"><div class="bar-fill ${barClass}" style="width:0%" data-pct="${pct}"></div></div>
+      <div class="bar-pct">${pct}%</div>
+      ${reached
+        ? '<span class="status-badge reached">✓ הגענו!</span>'
+        : isCurrent
+          ? '<span class="status-badge active">🎯 בדרך</span>'
+          : '<span class="status-badge ahead">⏳ הבא</span>'}`;
+    cont.appendChild(div);
+  });
+  setTimeout(()=>{ document.querySelectorAll('#mgr-milestones .bar-fill').forEach(b=>b.style.width=b.dataset.pct+'%'); },50);
+}
+
+// ══════════ TEAM VIEW ══════════
+function renderTeam(){
+  const now     = new Date();
+  const month   = now.getMonth();
+  const year    = now.getFullYear();
+  const entries = loadEntries();
+  const grossTotal = totalSalesGross(entries);
+  const netTotal   = grossTotal / VAT;
+  const passed     = passedWorkDays(year,month);
+  const left       = remainingWorkDays(year,month);
+
+  document.getElementById('team-monthBadge').textContent = MONTHS_HE[month]+' '+year;
+  document.getElementById('team-daysLeft').textContent   = left;
+  document.getElementById('team-daysNote').textContent   = `נשארו ${left} ימי עבודה בחודש`;
+
+  // Big pct toward next milestone
+  let nextTier=null, nextIdx=-1, pctToNext=0;
+  for(let i=0;i<TIERS.length;i++){
+    if(netTotal<TIERS[i].target){ nextTier=TIERS[i]; nextIdx=i; break; }
+  }
+  if(nextTier){
+    const prevTarget = nextIdx>0 ? TIERS[nextIdx-1].target : 0;
+    pctToNext = Math.min(100,Math.round(((netTotal-prevTarget)/(nextTier.target-prevTarget))*100));
+    document.getElementById('team-bigPct').textContent   = pctToNext+'%';
+    document.getElementById('team-bigLabel').textContent = `התקדמות לקראת ${nextTier.label}`;
+  } else {
+    pctToNext=100;
+    document.getElementById('team-bigPct').textContent   = '🏆';
+    document.getElementById('team-bigLabel').textContent = 'עברנו את כל המדרגות!';
+  }
+
+  document.getElementById('team-motivation').textContent = pickMotivation(pctToNext, !nextTier);
+
+  // Daily target for team
+  const fmt = n => Math.round(n).toLocaleString('he-IL');
+  if(nextTier && left>0){
+    const neededGross = ((nextTier.target - netTotal) / left) * VAT;
+    document.getElementById('team-dailyLabel').textContent  = `יעד יומי — ${nextTier.label}`;
+    document.getElementById('team-dailyAmount').textContent = fmt(neededGross);
+    document.getElementById('team-dailyCard').style.display = 'block';
+  } else if(!nextTier){
+    document.getElementById('team-dailyCard').style.display = 'none';
+  } else {
+    document.getElementById('team-dailyCard').style.display = 'none';
+  }
+
+  // Milestone bars (no ₪ amounts, no targets — only name, %, bonus label)
+  const barsEl = document.getElementById('team-bars');
+  barsEl.innerHTML='';
+  TIERS.forEach((tier,idx)=>{
+    const pct     = Math.min(100,Math.round((netTotal/tier.target)*100));
+    const reached = netTotal>=tier.target;
+    const isCur   = !reached&&(idx===0||netTotal>=TIERS[idx-1].target);
+    const color   = reached?'#4AE080':isCur?'#F5A623':'#3A5060';
+    const div=document.createElement('div');
+    div.className='team-bar-item';
+    div.innerHTML=`
+      <div class="team-bar-label">
+        <span>${tier.label} ${reached?'✓':''}</span>
+        <span class="team-bar-pct">${pct}%</span>
+      </div>
+      <div class="team-bar-track">
+        <div class="team-bar-fill" style="width:0%;background:${color}" data-pct="${pct}"></div>
+      </div>`;
+    barsEl.appendChild(div);
+  });
+  setTimeout(()=>{ document.querySelectorAll('.team-bar-fill').forEach(b=>b.style.width=b.dataset.pct+'%'); },50);
+}
+
+// ══════════ SECRET TAP (5x bottom-left) ══════════
+let tapCount=0, tapTimer=null;
+function secretTap(){
+  tapCount++;
+  clearTimeout(tapTimer);
+  tapTimer=setTimeout(()=>tapCount=0, 2000);
+  if(tapCount>=5){ tapCount=0; showScreen('pinScreen'); }
+}
+
+// ══════════ START ══════════
+// App opens directly to team view (public), secret tap → PIN → manager
+showScreen('teamScreen');
+renderTeam();
+</script>
+</body>
+</html>
