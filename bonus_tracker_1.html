@@ -21,12 +21,9 @@
     --red:    #E84040;
   }
 
-  /* Prevent iOS zoom on focus */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
   input[type="number"], input[type="date"] { font-size: max(16px, 1em); }
-  /* Smooth touch on buttons */
   button { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-  .screen { -webkit-overflow-scrolling: touch; }
-
 
   body {
     font-family: 'Heebo', sans-serif;
@@ -36,28 +33,28 @@
     direction: rtl;
   }
 
-  .screen { display: none; padding: 24px 16px 60px; }
+  .screen { display: none; padding: 24px 16px 80px; }
   .screen.active { display: block; }
   .container { max-width: 560px; margin: 0 auto; }
 
-  /* ── HEADER ── */
-  .header { text-align: center; margin-bottom: 22px; }
+  /* HEADER */
+  .header { text-align: center; margin-bottom: 20px; }
   .month-badge {
     display: inline-block; background: var(--green); color: white;
     font-size: 14px; font-weight: 700; padding: 5px 18px;
     border-radius: 20px; margin-bottom: 10px;
   }
-  .header h1 { font-size: 24px; font-weight: 900; }
+  .header h1 { font-size: 22px; font-weight: 900; }
   .header .sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
 
-  /* ── PIN ── */
+  /* PIN */
   #pinScreen {
     display: flex; flex-direction: column;
-    align-items: center; justify-content: center; min-height: 100vh;
-    gap: 22px; padding: 24px;
+    align-items: center; justify-content: center;
+    min-height: 100vh; gap: 20px; padding: 24px;
   }
   #pinScreen.active { display: flex; }
-  .pin-icon { font-size: 44px; }
+  .pin-icon  { font-size: 44px; }
   .pin-title { font-size: 20px; font-weight: 900; }
   .pin-sub   { font-size: 13px; color: var(--muted); }
   .pin-dots  { display: flex; gap: 14px; }
@@ -69,113 +66,132 @@
   .pin-dot.filled { background: var(--green2); border-color: var(--green2); }
   .pin-dot.error  { background: var(--red);    border-color: var(--red); }
   .pin-error { font-size: 13px; color: var(--red); font-weight: 600; min-height: 18px; }
-  .pin-pad { display: grid; grid-template-columns: repeat(3, 72px); gap: 12px; }
+  .pin-pad { display: grid; grid-template-columns: repeat(3, 80px); gap: 12px; }
   .pin-btn {
-    width: 72px; height: 72px; border-radius: 50%;
+    width: 80px; height: 80px; border-radius: 50%;
     border: 1.5px solid var(--border); background: var(--card);
     color: var(--text); font-family: 'Heebo', sans-serif;
-    font-size: 24px; font-weight: 700; cursor: pointer;
+    font-size: 26px; font-weight: 700; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: background .15s, transform .1s;
   }
   .pin-btn:hover  { background: var(--card2); }
   .pin-btn:active { transform: scale(.93); }
-  .pin-btn.del    { font-size: 18px; color: var(--muted); }
+  .pin-btn.del    { font-size: 20px; color: var(--muted); }
   .pin-btn.empty  { border: none; background: transparent; pointer-events: none; }
 
-  /* ── DAYS BAR ── */
+  /* DAYS BAR */
   .days-bar {
     background: var(--card); border: 1px solid var(--border);
-    border-radius: 14px; padding: 14px 20px; margin-bottom: 14px;
+    border-radius: 14px; padding: 14px 16px; margin-bottom: 14px;
     display: flex; text-align: center;
   }
-  .days-item { flex: 1; padding: 0 6px; }
+  .days-item { flex: 1; padding: 0 4px; }
   .days-item + .days-item { border-right: 1px solid var(--border); }
   .days-label { font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 3px; }
-  .days-val   { font-size: 24px; font-weight: 900; }
+  .days-val   { font-size: 22px; font-weight: 900; }
   .days-val.hi { color: #4AE080; }
-  .days-sub   { font-size: 11px; color: var(--muted); }
+  .days-sub   { font-size: 10px; color: var(--muted); }
 
-  /* ── CARD ── */
+  /* CARD */
   .card {
     background: var(--card); border: 1px solid var(--border);
-    border-radius: 16px; padding: 20px; margin-bottom: 14px;
+    border-radius: 16px; padding: 18px 16px; margin-bottom: 14px;
   }
   .card h2 {
-    font-size: 12px; font-weight: 700; color: var(--muted);
+    font-size: 11px; font-weight: 700; color: var(--muted);
     text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px;
   }
 
-  /* ── INPUT ── */
-  .input-row { display: flex; gap: 10px; align-items: flex-end; }
-  .input-group { flex: 1; }
-  .input-group label { display: block; font-size: 13px; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+  /* ENTRY FORM */
+  .entry-fields { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+  .input-group label { display: block; font-size: 13px; color: var(--muted); font-weight: 600; margin-bottom: 5px; }
   .input-group input {
     width: 100%; background: var(--card2); border: 1.5px solid var(--border);
     border-radius: 10px; color: var(--text); font-family: 'Heebo', sans-serif;
-    font-size: 20px; font-weight: 900; padding: 12px 14px; outline: none;
+    font-size: 20px; font-weight: 900; padding: 13px 14px; outline: none;
     transition: border-color .2s; direction: ltr; text-align: right;
   }
   .input-group input:focus { border-color: var(--green2); }
 
+  /* Mode toggle */
+  .mode-toggle {
+    display: flex; gap: 8px; margin-bottom: 12px;
+  }
+  .mode-btn {
+    flex: 1; padding: 10px; border-radius: 10px; border: 1.5px solid var(--border);
+    background: var(--card2); color: var(--muted); font-family: 'Heebo', sans-serif;
+    font-size: 13px; font-weight: 700; cursor: pointer; transition: all .2s;
+    text-align: center;
+  }
+  .mode-btn.active { border-color: var(--green2); color: var(--green2); background: rgba(37,178,101,.1); }
+
   .add-btn {
-    background: linear-gradient(135deg, var(--green), var(--green2));
-    color: white; border: none; border-radius: 10px; font-family: 'Heebo', sans-serif;
-    font-size: 15px; font-weight: 700; padding: 13px 20px; cursor: pointer;
-    white-space: nowrap; transition: opacity .2s;
-    height: 52px; display: flex; align-items: center;
+    width: 100%; background: linear-gradient(135deg, var(--green), var(--green2));
+    color: white; border: none; border-radius: 12px; font-family: 'Heebo', sans-serif;
+    font-size: 16px; font-weight: 700; padding: 15px; cursor: pointer;
+    transition: opacity .2s;
   }
   .add-btn:hover { opacity: .9; }
 
-  /* ── LOG ── */
-  .log-list { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+  /* SYNC STATUS */
+  .sync-status {
+    font-size: 12px; text-align: center; padding: 6px;
+    color: var(--muted); min-height: 22px;
+  }
+  .sync-status.ok   { color: var(--green2); }
+  .sync-status.err  { color: var(--red); }
+  .sync-status.load { color: var(--gold); }
+
+  /* LOG */
+  .log-list { display: flex; flex-direction: column; gap: 8px; }
   .log-item {
     display: flex; justify-content: space-between; align-items: center;
-    background: var(--card2); border-radius: 10px; padding: 10px 14px;
-    font-size: 14px;
+    background: var(--card2); border-radius: 10px; padding: 12px 14px;
   }
-  .log-date  { color: var(--muted); font-size: 13px; }
-  .log-amt   { font-weight: 700; color: var(--green2); }
+  .log-left  { display: flex; flex-direction: column; gap: 2px; }
+  .log-date  { color: var(--muted); font-size: 12px; }
+  .log-amt   { font-size: 16px; font-weight: 700; color: var(--green2); }
   .log-del   {
     background: none; border: none; color: var(--muted); cursor: pointer;
-    font-size: 16px; padding: 2px 6px; border-radius: 6px; transition: color .15s;
+    font-size: 18px; padding: 4px 8px; border-radius: 6px; transition: color .15s;
   }
   .log-del:hover { color: var(--red); }
-  .log-empty { font-size: 13px; color: var(--muted); text-align: center; padding: 12px 0; }
+  .log-empty { font-size: 13px; color: var(--muted); text-align: center; padding: 14px 0; }
 
-  /* ── DAILY TARGET ── */
+  /* DAILY TARGET */
   .daily-card {
     background: linear-gradient(135deg, #1A3A28, #0F2A1E);
     border: 1.5px solid var(--green); border-radius: 16px;
-    padding: 20px; margin-bottom: 14px; text-align: center;
+    padding: 20px 16px; margin-bottom: 14px; text-align: center;
   }
   .daily-label  { font-size: 13px; color: #6DBF8E; font-weight: 600; margin-bottom: 4px; }
-  .daily-amount { font-size: 48px; font-weight: 900; color: #4AE080; letter-spacing: -2px; line-height: 1; margin-bottom: 4px; }
+  .daily-amount { font-size: 46px; font-weight: 900; color: #4AE080; letter-spacing: -2px; line-height: 1; margin-bottom: 4px; }
   .daily-sub    { font-size: 13px; color: #6DBF8E; }
 
-  /* ── SUMMARY ── */
+  /* SUMMARY */
   .summary-row {
     display: flex; gap: 0; text-align: center; margin-bottom: 14px;
-    background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px 20px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px;
   }
-  .s-item { flex: 1; padding: 0 8px; }
+  .s-item { flex: 1; padding: 0 6px; }
   .s-item + .s-item { border-right: 1px solid var(--border); }
   .s-label { font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 3px; }
-  .s-val   { font-size: 20px; font-weight: 900; }
-  .s-sub   { font-size: 11px; color: var(--muted); }
+  .s-val   { font-size: 19px; font-weight: 900; }
+  .s-sub   { font-size: 10px; color: var(--muted); }
 
-  /* ── MOTIVATION ── */
+  /* MOTIVATION */
   .motivation {
     background: linear-gradient(135deg, #1A2010, #172130);
     border: 1px solid #2A4020; border-radius: 12px;
-    padding: 13px 18px; text-align: center;
+    padding: 13px 16px; text-align: center;
     font-size: 15px; font-weight: 700; color: #7ADF9A;
-    line-height: 1.5; margin-bottom: 18px;
+    line-height: 1.5; margin-bottom: 16px;
   }
 
-  /* ── MILESTONES ── */
+  /* MILESTONES */
   .section-title {
-    font-size: 12px; font-weight: 700; color: var(--muted);
+    font-size: 11px; font-weight: 700; color: var(--muted);
     text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;
   }
   .milestones { display: flex; flex-direction: column; gap: 10px; }
@@ -185,14 +201,14 @@
   }
   .milestone.reached { border-color: var(--green); background: linear-gradient(135deg, #172E20, #172130); }
   .milestone.current { border-color: var(--gold);  background: linear-gradient(135deg, #2A2010, #172130); }
-  .ms-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .ms-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 6px; }
   .ms-name { font-size: 14px; font-weight: 700; }
   .ms-bonus {
     font-size: 12px; font-weight: 700; padding: 3px 10px;
     border-radius: 20px; background: var(--card2); color: var(--gold);
   }
   .milestone.reached .ms-bonus { background: rgba(27,138,76,.3); color: #4AE080; }
-  .bar-track { background: var(--card2); border-radius: 6px; height: 9px; overflow: hidden; margin-bottom: 6px; }
+  .bar-track { background: var(--card2); border-radius: 6px; height: 10px; overflow: hidden; margin-bottom: 6px; }
   .bar-fill  { height: 100%; border-radius: 6px; transition: width 1s cubic-bezier(.4,0,.2,1); }
   .bar-fill.green  { background: linear-gradient(90deg, var(--green), var(--green2)); }
   .bar-fill.gold   { background: linear-gradient(90deg, var(--gold),  #FFD166); }
@@ -208,90 +224,72 @@
   .status-badge.active  { background: rgba(245,166,35,.2);  color: var(--gold); }
   .status-badge.ahead   { background: rgba(255,255,255,.06); color: var(--muted); }
 
-  /* ── BUTTONS ── */
+  /* GHOST BTN */
   .ghost-btn {
     width: 100%; background: transparent; border: 1px solid var(--border);
-    color: var(--muted); font-family: 'Heebo', sans-serif; font-size: 14px;
-    font-weight: 600; padding: 12px; border-radius: 10px; cursor: pointer;
+    color: var(--muted); font-family: 'Heebo', sans-serif; font-size: 15px;
+    font-weight: 600; padding: 14px; border-radius: 10px; cursor: pointer;
     margin-top: 10px; transition: border-color .2s, color .2s;
   }
   .ghost-btn:hover { border-color: var(--muted); color: var(--text); }
 
-  /* ── TEAM VIEW specific ── */
-  .team-pct-big {
-    text-align: center; padding: 28px 0 20px;
-  }
+  /* TEAM VIEW */
+  .team-pct-big { text-align: center; padding: 24px 0 16px; }
   .team-pct-num {
     font-size: 80px; font-weight: 900; line-height: 1;
     background: linear-gradient(135deg, #25B265, #4AE080);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
-  .team-pct-label { font-size: 16px; color: var(--muted); margin-top: 6px; font-weight: 600; }
-
-  .team-bars { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
-  .team-bar-item { }
+  .team-pct-label { font-size: 15px; color: var(--muted); margin-top: 6px; font-weight: 600; }
+  .team-bars { display: flex; flex-direction: column; gap: 12px; }
   .team-bar-label {
     display: flex; justify-content: space-between;
-    font-size: 13px; font-weight: 700; margin-bottom: 6px;
+    font-size: 14px; font-weight: 700; margin-bottom: 6px;
   }
   .team-bar-pct { color: var(--muted); }
   .team-bar-track { background: var(--card2); border-radius: 8px; height: 14px; overflow: hidden; }
   .team-bar-fill  { height: 100%; border-radius: 8px; transition: width 1.2s cubic-bezier(.4,0,.2,1); }
 
-  .team-days-note {
-    text-align: center; font-size: 14px; color: var(--muted);
-    font-weight: 600; margin-bottom: 18px;
-  }
+  /* Tap zone */
+  .tap-zone { position: fixed; bottom: 0; left: 0; width: 80px; height: 80px; }
 
-  /* secret tap zone */
-  .tap-zone {
-    position: fixed; bottom: 0; left: 0;
-    width: 60px; height: 60px;
-    cursor: default;
+
+
+  /* Loading overlay */
+  #loadingOverlay {
+    position: fixed; inset: 0; background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 16px; z-index: 100;
   }
+  .loading-spinner {
+    width: 40px; height: 40px; border: 3px solid var(--border);
+    border-top-color: var(--green2); border-radius: 50%;
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { font-size: 14px; color: var(--muted); }
 
   @media (max-width: 480px) {
-    #pinScreen { gap: 18px; }
-    .pin-pad { grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 300px; }
-    .pin-btn { width: 100%; height: 76px; font-size: 26px; border-radius: 16px; }
-    .pin-dot { width: 14px; height: 14px; }
-
+    #pinScreen { gap: 16px; }
+    .pin-pad { grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 280px; }
+    .pin-btn { width: 100%; height: 74px; border-radius: 16px; }
     .screen { padding: 16px 12px 80px; }
-    .header h1 { font-size: 20px; }
-    .card { padding: 16px 14px; }
-
-    .days-bar { padding: 12px 10px; }
-    .days-val { font-size: 20px; }
-    .days-label, .days-sub { font-size: 10px; }
-
-    .input-row { flex-direction: column; gap: 10px; }
-    .add-btn { width: 100%; height: 54px; justify-content: center; font-size: 16px; }
-    .input-group input { font-size: 22px; padding: 14px; }
-
-    .log-item { padding: 12px; font-size: 15px; }
-
-    .daily-amount { font-size: 42px; }
-    .daily-card { padding: 18px 14px; }
-
-    .summary-row { padding: 12px 10px; }
-    .s-val { font-size: 18px; }
-
-    .ms-top { flex-wrap: wrap; gap: 6px; }
-    .ms-bonus { font-size: 11px; }
-
+    .daily-amount { font-size: 40px; }
     .team-pct-num { font-size: 68px; }
-    .team-bar-track { height: 16px; border-radius: 8px; }
-    .team-bar-label { font-size: 14px; }
-
-    .ghost-btn { padding: 14px; font-size: 15px; margin-top: 8px; }
-    .tap-zone { width: 80px; height: 80px; }
+    .days-val { font-size: 20px; }
   }
 </style>
 </head>
 <body>
 
-<!-- ══════════ PIN SCREEN ══════════ -->
-<div id="pinScreen" class="active">
+<!-- Loading -->
+<div id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">מתחבר...</div>
+</div>
+
+<!-- PIN -->
+<div id="pinScreen">
   <div class="pin-icon">🔒</div>
   <div class="pin-title">הזנת נתוני מכירות</div>
   <div class="pin-sub">הכנס קוד כניסה</div>
@@ -318,21 +316,21 @@
   </div>
 </div>
 
-<!-- ══════════ MANAGER SCREEN ══════════ -->
+<!-- MANAGER -->
 <div id="managerScreen" class="screen">
 <div class="container">
 
   <div class="header">
     <div class="month-badge" id="mgr-monthBadge">—</div>
     <h1>⚙️ הזנת מכירות יומיות</h1>
-    <div class="sub">הנתונים נשמרים אוטומטית</div>
+    <div class="sub">הנתונים מסונכרנים אוטומטית</div>
   </div>
 
   <div class="days-bar">
     <div class="days-item">
-      <div class="days-label">ימי עבודה בחודש</div>
+      <div class="days-label">ימי עבודה</div>
       <div class="days-val" id="mgr-totalDays">—</div>
-      <div class="days-sub">ללא שבתות וחגים</div>
+      <div class="days-sub">בחודש</div>
     </div>
     <div class="days-item">
       <div class="days-label">עברו</div>
@@ -346,30 +344,39 @@
     </div>
   </div>
 
-  <!-- Entry -->
   <div class="card">
     <h2>הוספת יום</h2>
-    <div class="input-row">
+
+    <!-- Mode toggle -->
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="modeReplace" onclick="setMode('replace')">
+        🔄 עדכון יום שלם
+      </button>
+      <button class="mode-btn" id="modeAdd" onclick="setMode('add')">
+        ➕ הוספה לסכום קיים
+      </button>
+    </div>
+
+    <div class="entry-fields">
       <div class="input-group">
         <label>תאריך</label>
         <input type="date" id="entryDate">
       </div>
       <div class="input-group">
-        <label>מכירות ביום (כולל מע"מ)</label>
+        <label id="amtLabel">מכירות ביום (כולל מע"מ)</label>
         <input type="number" id="entryAmt" placeholder="8,500" inputmode="numeric">
       </div>
-      <button class="add-btn" onclick="addEntry()">+ הוסף</button>
     </div>
-    <div id="entryError" style="font-size:13px;color:var(--red);margin-top:8px;min-height:18px;"></div>
+    <div id="entryError" style="font-size:13px;color:var(--red);margin-bottom:8px;min-height:16px;"></div>
+    <button class="add-btn" onclick="addEntry()">שמור ←</button>
+    <div class="sync-status" id="syncStatus"></div>
   </div>
 
-  <!-- Log -->
   <div class="card">
     <h2>יומן מכירות — <span id="mgr-monthName">—</span></h2>
     <div class="log-list" id="logList"></div>
   </div>
 
-  <!-- Results -->
   <div id="mgr-results">
     <div class="daily-card">
       <div class="daily-label" id="mgr-dailyLabel">יעד יומי</div>
@@ -391,7 +398,6 @@
     </div>
 
     <div class="motivation" id="mgr-motivation"></div>
-
     <div class="section-title">מדרגות הבונוס</div>
     <div class="milestones" id="mgr-milestones"></div>
   </div>
@@ -402,17 +408,44 @@
 </div>
 </div>
 
-<!-- ══════════ TEAM SCREEN ══════════ -->
+<!-- TEAM -->
 <div id="teamScreen" class="screen">
 <div class="container">
 
   <div class="header">
     <div class="month-badge" id="team-monthBadge">—</div>
     <h1>🎯 יעדים ובונוסים</h1>
-    <div class="sub" id="team-daysNote">—</div>
+    <div class="sub" id="team-sub">—</div>
   </div>
 
-  <!-- Big % toward next milestone -->
+  <div class="daily-card" id="team-dailyCard">
+    <div class="daily-label" id="team-dailyLabel">יעד יומי</div>
+    <div class="daily-amount" id="team-dailyAmount">—</div>
+    <div class="daily-sub">₪ כולל מע"מ ליום</div>
+  </div>
+
+  <div class="card" id="team-todayCard">
+    <div style="font-size:16px;font-weight:700;color:var(--text);text-align:center;margin-bottom:16px;">התקדמות מכירות היום</div>
+
+    <!-- Remain — prominent -->
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="font-size:15px;color:var(--muted);font-weight:700;margin-bottom:6px;">נשאר ליעד היומי</div>
+      <div id="team-todayRemain" style="font-size:52px;font-weight:900;letter-spacing:-2px;line-height:1;color:#F5A623;">—</div>
+      <div id="team-todayRemainSub" style="font-size:12px;color:var(--muted);margin-top:4px;">כולל מע"מ</div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="bar-track" style="height:14px;border-radius:8px;margin-bottom:8px;background:var(--card2);">
+      <div id="team-todayBar" style="width:0%;height:100%;border-radius:8px;transition:width 1s ease;background:linear-gradient(90deg,#1B8A4C,#4AE080);"></div>
+    </div>
+
+    <!-- Bottom row: sold so far / target -->
+    <div style="display:flex;justify-content:space-between;font-size:13px;">
+      <div style="color:var(--muted);">נמכר: <span id="team-todaySales" style="color:var(--text);font-weight:700;">—</span></div>
+      <div style="color:var(--muted);">יעד: <span id="team-todayTarget" style="color:var(--text);font-weight:700;">11,800 ₪</span></div>
+    </div>
+  </div>
+
   <div class="card">
     <div class="team-pct-big">
       <div class="team-pct-num" id="team-bigPct">—%</div>
@@ -421,36 +454,42 @@
     <div class="motivation" id="team-motivation" style="margin-bottom:0;"></div>
   </div>
 
-  <!-- All milestone bars -->
   <div class="card">
     <h2>מדרגות הבונוס</h2>
     <div class="team-bars" id="team-bars"></div>
   </div>
 
-  <!-- Daily target -->
-  <div class="daily-card" id="team-dailyCard">
-    <div class="daily-label" id="team-dailyLabel">יעד יומי</div>
-    <div class="daily-amount" id="team-dailyAmount">—</div>
-    <div class="daily-sub">₪ כולל מע"מ ליום</div>
-  </div>
-
-  <!-- Days remaining -->
   <div class="card" style="text-align:center;padding:18px;">
     <div class="days-label" style="margin-bottom:6px;">ימי עבודה שנשארו בחודש</div>
     <div class="days-val hi" id="team-daysLeft" style="font-size:40px;">—</div>
   </div>
 
 </div>
-<!-- secret tap zone — bottom-left corner, 5 taps to go to manager -->
 <div class="tap-zone" id="tapZone" onclick="secretTap()"></div>
 </div>
 
-<script>
-// ══════════ CONFIG ══════════
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js";
+import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBvUJTL5W_QVgsJRg2jxjmC1ZmliiuhYHU",
+  authDomain: "havusha-performance.firebaseapp.com",
+  projectId: "havusha-performance",
+  storageBucket: "havusha-performance.firebasestorage.app",
+  messagingSenderId: "251573732064",
+  appId: "1:251573732064:web:bbc5f085029db8ed034685"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+// ── CONFIG ──
 const PIN = '3008';
 const VAT = 1.18;
-const MONTHS_HE = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני',
-                   'יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+const MONTHS_HE = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+const DAY_HE    = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
 
 const TIERS = [
   { target: 260000, bonus: 2000,  label: 'מדרגה ראשונה', color: 'green' },
@@ -461,18 +500,16 @@ const TIERS = [
 ];
 
 const MOTIVATIONS_LOW  = ["כל מכירה מקרבת אתכם לבונוס! 🚀","הצוות עושה עבודה מדהימה! ⭐","כל לקוח הוא הזדמנות! 🌟","ביחד נגיע לשם! 💪"];
-const MOTIVATIONS_MID  = ["אתם על המסלול — תמשיכו! 💪","קצב טוב! עוד קצת ומגיעים! 🎯","ממשיכים להתקדם — כל יום נחשב! 📈"];
-const MOTIVATIONS_HIGH = ["🔥 כמעט שם! עוד קצת ומגיעים לבונוס!","🔥 סוף השבוע הולך להיות טוב מאוד!"];
+const MOTIVATIONS_MID  = ["אתם על המסלול — תמשיכו! 💪","קצב טוב! עוד קצת ומגיעים! 🎯","כל יום נחשב! 📈"];
+const MOTIVATIONS_HIGH = ["🔥 כמעט שם! עוד קצת ומגיעים לבונוס!","🔥 סוף החודש הולך להיות טוב מאוד!"];
 const MOTIVATIONS_DONE = ["🏆 יוצא מן הכלל! עברתם את כל המדרגות!","🏆 הצוות מדהים — ביצועים יוצאי דופן!"];
 
-function pickMotivation(pctToNext, allDone) {
-  if(allDone)          return MOTIVATIONS_DONE[Math.floor(Math.random()*MOTIVATIONS_DONE.length)];
-  if(pctToNext > 85)   return MOTIVATIONS_HIGH[Math.floor(Math.random()*MOTIVATIONS_HIGH.length)];
-  if(pctToNext > 55)   return MOTIVATIONS_MID[Math.floor(Math.random()*MOTIVATIONS_MID.length)];
-  return MOTIVATIONS_LOW[Math.floor(Math.random()*MOTIVATIONS_LOW.length)];
+function pickMotivation(pct, allDone) {
+  const arr = allDone ? MOTIVATIONS_DONE : pct > 85 ? MOTIVATIONS_HIGH : pct > 55 ? MOTIVATIONS_MID : MOTIVATIONS_LOW;
+  return arr[Math.floor(Math.random() * arr.length)];
 }
 
-// ══════════ CALENDAR ══════════
+// ── CALENDAR ──
 const HOLIDAYS = new Set([
   '2026-04-03','2026-04-04','2026-04-09','2026-04-10',
   '2026-05-22','2026-05-23',
@@ -481,43 +518,77 @@ const HOLIDAYS = new Set([
 ]);
 function pad(n){ return String(n).padStart(2,'0'); }
 function dateKey(d){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
-function isWorkDay(d){ return d.getDay() !== 6 && !HOLIDAYS.has(dateKey(d)); }
+function isWorkDay(d){ return d.getDay()!==6 && !HOLIDAYS.has(dateKey(d)); }
 
-function monthWorkDays(year, month) {
-  const d = new Date(year, month, 1); let n = 0;
-  while(d.getMonth()===month){ if(isWorkDay(d)) n++; d.setDate(d.getDate()+1); }
+function monthWorkDays(y,m){
+  const d=new Date(y,m,1); let n=0;
+  while(d.getMonth()===m){ if(isWorkDay(d)) n++; d.setDate(d.getDate()+1); }
   return n;
 }
-function remainingWorkDays(year, month) {
-  const today = new Date(); today.setHours(0,0,0,0);
-  const d = new Date(today); let n = 0;
-  while(d.getMonth()===month){ if(isWorkDay(d)) n++; d.setDate(d.getDate()+1); }
+function remainingWorkDays(y,m){
+  const today=new Date(); today.setHours(0,0,0,0);
+  const d=new Date(today); let n=0;
+  while(d.getMonth()===m){ if(isWorkDay(d)) n++; d.setDate(d.getDate()+1); }
   return n;
 }
-function passedWorkDays(year, month) {
-  return monthWorkDays(year,month) - remainingWorkDays(year,month);
+
+// ── STATE ──
+const now    = new Date();
+const YEAR   = now.getFullYear();
+const MONTH  = now.getMonth();
+const COL_ID = `sales_${YEAR}_${pad(MONTH+1)}`;
+
+let entries = {}; // { 'YYYY-MM-DD': amount }
+let entryMode = 'replace'; // or 'add'
+let unsubscribe = null;
+
+const fmt = n => Math.round(n).toLocaleString('he-IL');
+
+// ── FIRESTORE LISTENER ──
+function startListener(){
+  const colRef = collection(db, COL_ID);
+  unsubscribe = onSnapshot(colRef, snap => {
+    entries = {};
+    snap.forEach(d => { entries[d.id] = d.data().amount; });
+    renderMgrResults();
+    renderLog();
+    renderTeamData();
+  }, err => {
+    console.error(err);
+    setSyncStatus('שגיאת חיבור — בדוק אינטרנט', 'err');
+  });
 }
 
-// ══════════ STORAGE ══════════
-function storageKey(year, month){
-  return `sales_${year}_${pad(month+1)}`;
-}
-function loadEntries(){
-  const now = new Date();
+// ── FIRESTORE WRITE ──
+async function saveEntry(dateVal, amount){
+  setSyncStatus('שומר...', 'load');
   try {
-    const raw = localStorage.getItem(storageKey(now.getFullYear(), now.getMonth()));
-    return raw ? JSON.parse(raw) : {};
-  } catch(e){ return {}; }
-}
-function saveEntries(entries){
-  const now = new Date();
-  localStorage.setItem(storageKey(now.getFullYear(), now.getMonth()), JSON.stringify(entries));
-}
-function totalSalesGross(entries){
-  return Object.values(entries).reduce((s,v)=>s+v, 0);
+    await setDoc(doc(db, COL_ID, dateVal), { amount });
+    setSyncStatus('✓ נשמר', 'ok');
+    setTimeout(()=>setSyncStatus('',''), 2000);
+  } catch(e){
+    setSyncStatus('שגיאה בשמירה', 'err');
+  }
 }
 
-// ══════════ PIN ══════════
+async function deleteEntry(dateVal){
+  setSyncStatus('מוחק...', 'load');
+  try {
+    await deleteDoc(doc(db, COL_ID, dateVal));
+    setSyncStatus('✓ נמחק', 'ok');
+    setTimeout(()=>setSyncStatus('',''), 2000);
+  } catch(e){
+    setSyncStatus('שגיאה במחיקה', 'err');
+  }
+}
+
+function setSyncStatus(msg, cls){
+  const el = document.getElementById('syncStatus');
+  el.textContent = msg;
+  el.className = 'sync-status' + (cls ? ' '+cls : '');
+}
+
+// ── PIN ──
 let pinEntry = '';
 function updateDots(error){
   for(let i=0;i<4;i++){
@@ -527,7 +598,7 @@ function updateDots(error){
     else if(i<pinEntry.length) d.classList.add('filled');
   }
 }
-function pinPress(n){
+window.pinPress = function(n){
   if(pinEntry.length>=4) return;
   document.getElementById('pinError').textContent='';
   pinEntry+=n; updateDots(false);
@@ -537,169 +608,155 @@ function pinPress(n){
       else {
         updateDots(true);
         document.getElementById('pinError').textContent='קוד שגוי — נסה שוב';
-        setTimeout(()=>{ pinEntry=''; updateDots(false); }, 900);
+        setTimeout(()=>{ pinEntry=''; updateDots(false); },900);
       }
     },150);
   }
-}
-function pinDel(){
+};
+window.pinDel = function(){
   document.getElementById('pinError').textContent='';
   if(pinEntry.length>0){ pinEntry=pinEntry.slice(0,-1); updateDots(false); }
-}
+};
 document.addEventListener('keydown', e=>{
   if(!document.getElementById('pinScreen').classList.contains('active')) return;
-  if(e.key>='0'&&e.key<='9') pinPress(e.key);
-  if(e.key==='Backspace') pinDel();
+  if(e.key>='0'&&e.key<='9') window.pinPress(e.key);
+  if(e.key==='Backspace') window.pinDel();
 });
 
-// ══════════ SCREENS ══════════
+// ── SCREENS ──
 function showScreen(id){
-  ['pinScreen','managerScreen','teamScreen'].forEach(s=>{
-    const el=document.getElementById(s);
+  document.querySelectorAll('.screen,[id$="Screen"]').forEach(el=>{
     el.classList.remove('active');
-    if(el.classList.contains('screen')) el.style.display='none';
-    else el.style.display='none';
+    if(el.tagName!=='DIV') return;
+    el.style.display = el.classList.contains('screen') ? 'none' : 'none';
   });
-  const target=document.getElementById(id);
-  target.classList.add('active');
-  if(target.classList.contains('screen')) target.style.display='block';
-  else target.style.display='flex';
-}
-
-function lockApp(){
-  pinEntry=''; updateDots(false);
-  document.getElementById('pinError').textContent='';
-  showScreen('pinScreen');
-}
-
-function goTeam(){
-  renderTeam();
-  showScreen('teamScreen');
+  const t=document.getElementById(id);
+  t.classList.add('active');
+  t.style.display = t.classList.contains('screen') ? 'block' : 'flex';
 }
 
 function showManager(){
   showScreen('managerScreen');
-  initManager();
+  initManagerUI();
 }
+window.goTeam = function(){ showScreen('teamScreen'); renderTeamData(); };
+window.lockApp = function(){
+  pinEntry=''; updateDots(false);
+  document.getElementById('pinError').textContent='';
+  showScreen('pinScreen');
+};
 
-// ══════════ MANAGER ══════════
-function initManager(){
-  const now   = new Date();
-  const year  = now.getFullYear();
-  const month = now.getMonth();
+// ── MODE TOGGLE ──
+window.setMode = function(mode){
+  entryMode = mode;
+  document.getElementById('modeReplace').classList.toggle('active', mode==='replace');
+  document.getElementById('modeAdd').classList.toggle('active', mode==='add');
+  document.getElementById('amtLabel').textContent =
+    mode==='add' ? 'סכום להוספה (כולל מע"מ)' : 'מכירות ביום (כולל מע"מ)';
+};
 
-  const total  = monthWorkDays(year,month);
-  const passed = passedWorkDays(year,month);
-  const left   = remainingWorkDays(year,month);
-
-  document.getElementById('mgr-monthBadge').textContent = MONTHS_HE[month]+' '+year;
-  document.getElementById('mgr-monthName').textContent  = MONTHS_HE[month];
+// ── MANAGER UI ──
+function initManagerUI(){
+  const total  = monthWorkDays(YEAR,MONTH);
+  const left   = remainingWorkDays(YEAR,MONTH);
+  const passed = total - left;
+  document.getElementById('mgr-monthBadge').textContent = MONTHS_HE[MONTH]+' '+YEAR;
+  document.getElementById('mgr-monthName').textContent  = MONTHS_HE[MONTH];
   document.getElementById('mgr-totalDays').textContent  = total;
   document.getElementById('mgr-passedDays').textContent = passed;
   document.getElementById('mgr-leftDays').textContent   = left;
-
-  // default date = today
   document.getElementById('entryDate').value = dateKey(now);
-
-  renderLog();
-  renderMgrResults();
 }
 
-function addEntry(){
+window.addEntry = async function(){
   const dateVal = document.getElementById('entryDate').value;
   const amtVal  = parseFloat(document.getElementById('entryAmt').value);
   const errEl   = document.getElementById('entryError');
-
   if(!dateVal){ errEl.textContent='בחר תאריך'; return; }
   if(!amtVal||amtVal<=0){ errEl.textContent='הכנס סכום תקין'; return; }
   errEl.textContent='';
 
-  const entries = loadEntries();
-  entries[dateVal] = amtVal;
-  saveEntries(entries);
-  document.getElementById('entryAmt').value='';
-  renderLog();
-  renderMgrResults();
-}
+  let finalAmt = amtVal;
+  if(entryMode==='add' && entries[dateVal]){
+    finalAmt = entries[dateVal] + amtVal;
+  }
 
-function deleteEntry(dateVal){
-  const entries = loadEntries();
-  delete entries[dateVal];
-  saveEntries(entries);
-  renderLog();
-  renderMgrResults();
-}
+  await saveEntry(dateVal, finalAmt);
+  document.getElementById('entryAmt').value='';
+};
+
+window.deleteEntry = async function(dateVal){
+  await deleteEntry(dateVal);
+};
 
 function renderLog(){
-  const entries = loadEntries();
-  const keys    = Object.keys(entries).sort().reverse();
-  const list    = document.getElementById('logList');
-
+  const keys = Object.keys(entries).sort().reverse();
+  const list = document.getElementById('logList');
+  if(!list) return;
   if(keys.length===0){
     list.innerHTML='<div class="log-empty">אין נתונים עדיין — הוסף את היום הראשון</div>';
     return;
   }
-
-  const fmt = n => Math.round(n).toLocaleString('he-IL');
   list.innerHTML = keys.map(k=>{
     const d = new Date(k+'T12:00:00');
-    const dayNames = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
-    const label = `${dayNames[d.getDay()]} ${d.getDate()}/${d.getMonth()+1}`;
+    const label = `${DAY_HE[d.getDay()]} ${d.getDate()}/${d.getMonth()+1}`;
     return `<div class="log-item">
-      <span class="log-date">${label}</span>
-      <span class="log-amt">₪${fmt(entries[k])}</span>
-      <button class="log-del" onclick="deleteEntry('${k}')" title="מחק">✕</button>
+      <div class="log-left">
+        <span class="log-date">${label}</span>
+        <span class="log-amt">₪${fmt(entries[k])}</span>
+      </div>
+      <button class="log-del" onclick="deleteEntry('${k}')">✕</button>
     </div>`;
   }).join('');
 }
 
-function renderMgrResults(){
-  const now     = new Date();
-  const month   = now.getMonth();
-  const entries = loadEntries();
-  const grossTotal = totalSalesGross(entries);
+function calcStats(){
+  const total  = monthWorkDays(YEAR,MONTH);
+  const left   = remainingWorkDays(YEAR,MONTH);
+  const passed = total - left;
+  const grossTotal = Object.values(entries).reduce((s,v)=>s+v,0);
   const netTotal   = grossTotal / VAT;
-  const passed     = passedWorkDays(now.getFullYear(), month);
-  const left       = remainingWorkDays(now.getFullYear(), month);
-  const fmt        = n => Math.round(n).toLocaleString('he-IL');
+  const avgGross   = passed>0 ? grossTotal/passed : 0;
 
-  document.getElementById('mgr-total').textContent = fmt(grossTotal);
-  const avgGross = passed>0 ? grossTotal/passed : 0;
-  document.getElementById('mgr-avg').textContent = fmt(avgGross);
-
-  // Next tier
   let nextTier=null, nextIdx=-1;
   for(let i=0;i<TIERS.length;i++){
     if(netTotal<TIERS[i].target){ nextTier=TIERS[i]; nextIdx=i; break; }
   }
+  const prevTarget = nextIdx>0 ? TIERS[nextIdx-1].target : 0;
+  const pctToNext  = nextTier
+    ? Math.min(100,Math.round(((netTotal-prevTarget)/(nextTier.target-prevTarget))*100))
+    : 100;
+  const dailyNeededGross = nextTier&&left>0 ? ((nextTier.target-netTotal)/left)*VAT : null;
 
-  if(nextTier && left>0){
-    const neededNet   = (nextTier.target - netTotal) / left;
-    const neededGross = neededNet * VAT;
-    document.getElementById('mgr-dailyLabel').textContent  = `יעד יומי — ${nextTier.label}`;
-    document.getElementById('mgr-dailyAmount').textContent = fmt(neededGross);
+  return { grossTotal, netTotal, avgGross, passed, left, nextTier, nextIdx, prevTarget, pctToNext, dailyNeededGross };
+}
+
+function renderMgrResults(){
+  const s = calcStats();
+  document.getElementById('mgr-total').textContent = fmt(s.grossTotal);
+  document.getElementById('mgr-avg').textContent   = fmt(s.avgGross);
+
+  if(s.nextTier && s.left>0){
+    document.getElementById('mgr-dailyLabel').textContent  = `יעד יומי — ${s.nextTier.label}`;
+    document.getElementById('mgr-dailyAmount').textContent = fmt(s.dailyNeededGross);
     document.getElementById('mgr-dailySub').textContent    = '₪ כולל מע"מ ליום';
-  } else if(!nextTier){
+  } else if(!s.nextTier){
     document.getElementById('mgr-dailyLabel').textContent  = 'עברתם את כל המדרגות!';
     document.getElementById('mgr-dailyAmount').textContent = '🏆';
     document.getElementById('mgr-dailySub').textContent    = '';
-  } else {
-    document.getElementById('mgr-dailyAmount').textContent = '—';
-    document.getElementById('mgr-dailyLabel').textContent  = 'יעד יומי';
-    document.getElementById('mgr-dailySub').textContent    = '';
   }
 
-  // Motivation
-  const pctToNext = nextTier
-    ? Math.round(((netTotal-(nextIdx>0?TIERS[nextIdx-1].target:0))/(nextTier.target-(nextIdx>0?TIERS[nextIdx-1].target:0)))*100)
-    : 100;
-  document.getElementById('mgr-motivation').textContent = pickMotivation(pctToNext, !nextTier);
+  document.getElementById('mgr-motivation').textContent = pickMotivation(s.pctToNext, !s.nextTier);
 
-  // Milestones
-  const cont = document.getElementById('mgr-milestones');
+  renderMilestones('mgr-milestones', s.netTotal);
+}
+
+function renderMilestones(elId, netTotal){
+  const cont = document.getElementById(elId);
+  if(!cont) return;
   cont.innerHTML='';
   TIERS.forEach((tier,idx)=>{
-    const pct      = Math.min(100, Math.round((netTotal/tier.target)*100));
+    const pct      = Math.min(100,Math.round((netTotal/tier.target)*100));
     const reached  = netTotal>=tier.target;
     const isCurrent= !reached&&(idx===0||netTotal>=TIERS[idx-1].target);
     const barClass = reached?'done':tier.color;
@@ -719,68 +776,46 @@ function renderMgrResults(){
           : '<span class="status-badge ahead">⏳ הבא</span>'}`;
     cont.appendChild(div);
   });
-  setTimeout(()=>{ document.querySelectorAll('#mgr-milestones .bar-fill').forEach(b=>b.style.width=b.dataset.pct+'%'); },50);
+  setTimeout(()=>cont.querySelectorAll('.bar-fill').forEach(b=>b.style.width=b.dataset.pct+'%'),50);
 }
 
-// ══════════ TEAM VIEW ══════════
-function renderTeam(){
-  const now     = new Date();
-  const month   = now.getMonth();
-  const year    = now.getFullYear();
-  const entries = loadEntries();
-  const grossTotal = totalSalesGross(entries);
-  const netTotal   = grossTotal / VAT;
-  const passed     = passedWorkDays(year,month);
-  const left       = remainingWorkDays(year,month);
+function renderTeamData(){
+  const s = calcStats();
+  document.getElementById('team-monthBadge').textContent = MONTHS_HE[MONTH]+' '+YEAR;
+  document.getElementById('team-sub').textContent        = `נשארו ${s.left} ימי עבודה בחודש`;
+  document.getElementById('team-daysLeft').textContent   = s.left;
 
-  document.getElementById('team-monthBadge').textContent = MONTHS_HE[month]+' '+year;
-  document.getElementById('team-daysLeft').textContent   = left;
-  document.getElementById('team-daysNote').textContent   = `נשארו ${left} ימי עבודה בחודש`;
-
-  // Big pct toward next milestone
-  let nextTier=null, nextIdx=-1, pctToNext=0;
-  for(let i=0;i<TIERS.length;i++){
-    if(netTotal<TIERS[i].target){ nextTier=TIERS[i]; nextIdx=i; break; }
-  }
-  if(nextTier){
-    const prevTarget = nextIdx>0 ? TIERS[nextIdx-1].target : 0;
-    pctToNext = Math.min(100,Math.round(((netTotal-prevTarget)/(nextTier.target-prevTarget))*100));
-    document.getElementById('team-bigPct').textContent   = pctToNext+'%';
-    document.getElementById('team-bigLabel').textContent = `התקדמות לקראת ${nextTier.label}`;
+  // Daily target
+  if(s.nextTier && s.left>0){
+    document.getElementById('team-dailyLabel').textContent  = `יעד יומי — ${s.nextTier.label}`;
+    document.getElementById('team-dailyAmount').textContent = fmt(s.dailyNeededGross);
+    document.getElementById('team-dailyCard').style.display = 'block';
   } else {
-    pctToNext=100;
+    document.getElementById('team-dailyCard').style.display = 'none';
+  }
+
+  // Big %
+  if(s.nextTier){
+    document.getElementById('team-bigPct').textContent   = s.pctToNext+'%';
+    document.getElementById('team-bigLabel').textContent = `התקדמות לקראת ${s.nextTier.label}`;
+  } else {
     document.getElementById('team-bigPct').textContent   = '🏆';
     document.getElementById('team-bigLabel').textContent = 'עברנו את כל המדרגות!';
   }
+  document.getElementById('team-motivation').textContent = pickMotivation(s.pctToNext, !s.nextTier);
 
-  document.getElementById('team-motivation').textContent = pickMotivation(pctToNext, !nextTier);
-
-  // Daily target for team
-  const fmt = n => Math.round(n).toLocaleString('he-IL');
-  if(nextTier && left>0){
-    const neededGross = ((nextTier.target - netTotal) / left) * VAT;
-    document.getElementById('team-dailyLabel').textContent  = `יעד יומי — ${nextTier.label}`;
-    document.getElementById('team-dailyAmount').textContent = fmt(neededGross);
-    document.getElementById('team-dailyCard').style.display = 'block';
-  } else if(!nextTier){
-    document.getElementById('team-dailyCard').style.display = 'none';
-  } else {
-    document.getElementById('team-dailyCard').style.display = 'none';
-  }
-
-  // Milestone bars (no ₪ amounts, no targets — only name, %, bonus label)
+  // Team bars
   const barsEl = document.getElementById('team-bars');
   barsEl.innerHTML='';
   TIERS.forEach((tier,idx)=>{
-    const pct     = Math.min(100,Math.round((netTotal/tier.target)*100));
-    const reached = netTotal>=tier.target;
-    const isCur   = !reached&&(idx===0||netTotal>=TIERS[idx-1].target);
+    const pct     = Math.min(100,Math.round((s.netTotal/tier.target)*100));
+    const reached = s.netTotal>=tier.target;
+    const isCur   = !reached&&(idx===0||s.netTotal>=TIERS[idx-1].target);
     const color   = reached?'#4AE080':isCur?'#F5A623':'#3A5060';
     const div=document.createElement('div');
-    div.className='team-bar-item';
     div.innerHTML=`
       <div class="team-bar-label">
-        <span>${tier.label} ${reached?'✓':''}</span>
+        <span>${tier.label}${reached?' ✓':''}</span>
         <span class="team-bar-pct">${pct}%</span>
       </div>
       <div class="team-bar-track">
@@ -788,22 +823,76 @@ function renderTeam(){
       </div>`;
     barsEl.appendChild(div);
   });
-  setTimeout(()=>{ document.querySelectorAll('.team-bar-fill').forEach(b=>b.style.width=b.dataset.pct+'%'); },50);
+  setTimeout(()=>barsEl.querySelectorAll('.team-bar-fill').forEach(b=>b.style.width=b.dataset.pct+'%'),50);
+
+  // Today progress bar
+  renderTodayProgress(s);
 }
 
-// ══════════ SECRET TAP (5x bottom-left) ══════════
+function renderTodayProgress(s) {
+  // Fixed daily target: tier 1 (260,000) / 26 work days * VAT
+  const DAILY_TARGET_GROSS = Math.round((260000 / monthWorkDays(YEAR, MONTH)) * VAT);
+  document.getElementById('team-todayTarget').textContent = fmt(DAILY_TARGET_GROSS) + ' ₪';
+
+  // Today's entry
+  const todayKey = dateKey(new Date());
+  const todaySales = entries[todayKey] || 0;
+
+  const pct = Math.min(100, Math.round((todaySales / DAILY_TARGET_GROSS) * 100));
+  const remain = Math.max(0, DAILY_TARGET_GROSS - todaySales);
+
+  document.getElementById('team-todaySales').textContent = '₪' + fmt(todaySales);
+  document.getElementById('team-todayTarget').textContent = fmt(DAILY_TARGET_GROSS) + ' ₪';
+
+  const remainEl    = document.getElementById('team-todayRemain');
+  const remainSubEl = document.getElementById('team-todayRemainSub');
+
+  if(todaySales >= DAILY_TARGET_GROSS){
+    remainEl.textContent    = '✓';
+    remainEl.style.color    = '#4AE080';
+    remainEl.style.fontSize = '52px';
+    remainSubEl.textContent = 'הגענו ליעד היום!';
+    remainSubEl.style.color = '#4AE080';
+  } else {
+    remainEl.textContent    = fmt(remain);
+    remainEl.style.color    = '#F5A623';
+    remainEl.style.fontSize = '52px';
+    remainSubEl.textContent = 'כולל מע"מ';
+    remainSubEl.style.color = '';
+  }
+
+  // Animate bar
+  const bar = document.getElementById('team-todayBar');
+  bar.style.width = '0%';
+  setTimeout(() => { bar.style.width = pct + '%'; }, 50);
+
+  // Color bar by progress
+  if(pct >= 100)      bar.style.background = 'linear-gradient(90deg,#1B8A4C,#4AE080)';
+  else if(pct >= 60)  bar.style.background = 'linear-gradient(90deg,#F5A623,#FFD166)';
+  else                bar.style.background = 'linear-gradient(90deg,#3A5060,#5A7080)';
+}
+
+// ── SECRET TAP ──
 let tapCount=0, tapTimer=null;
-function secretTap(){
+window.secretTap = function(){
   tapCount++;
   clearTimeout(tapTimer);
-  tapTimer=setTimeout(()=>tapCount=0, 2000);
+  tapTimer=setTimeout(()=>tapCount=0,2000);
   if(tapCount>=5){ tapCount=0; showScreen('pinScreen'); }
-}
+};
 
-// ══════════ START ══════════
-// App opens directly to team view (public), secret tap → PIN → manager
+// ── INIT ──
+// Show team view immediately, start listener
 showScreen('teamScreen');
-renderTeam();
+startListener();
+document.getElementById('loadingOverlay').style.display='none';
+
+// init team static info
+document.getElementById('team-monthBadge').textContent = MONTHS_HE[MONTH]+' '+YEAR;
+const leftInit = remainingWorkDays(YEAR,MONTH);
+document.getElementById('team-daysLeft').textContent = leftInit;
+document.getElementById('team-sub').textContent = `נשארו ${leftInit} ימי עבודה בחודש`;
+
 </script>
 </body>
 </html>
