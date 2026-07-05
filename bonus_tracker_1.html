@@ -429,7 +429,7 @@
 
     <!-- Remain — prominent -->
     <div style="text-align:center;margin-bottom:16px;">
-      <div style="font-size:15px;color:var(--muted);font-weight:700;margin-bottom:6px;">נשאר ליעד היומי</div>
+      <div id="team-todayLabel2" style="font-size:15px;color:var(--muted);font-weight:700;margin-bottom:6px;">נשאר ליעד היומי — מדרגה ראשונה</div>
       <div id="team-todayRemain" style="font-size:52px;font-weight:900;letter-spacing:-2px;line-height:1;color:#F5A623;">—</div>
       <div id="team-todayRemainSub" style="font-size:12px;color:var(--muted);margin-top:4px;">כולל מע"מ</div>
     </div>
@@ -830,13 +830,34 @@ function renderTeamData(){
 }
 
 function renderTodayProgress(s) {
-  // Fixed daily target: tier 1 (260,000) / 26 work days * VAT
-  const DAILY_TARGET_GROSS = Math.round((260000 / monthWorkDays(YEAR, MONTH)) * VAT);
-  document.getElementById('team-todayTarget').textContent = fmt(DAILY_TARGET_GROSS) + ' ₪';
+  const totalDaysInMonth = monthWorkDays(YEAR, MONTH);
 
-  // Today's entry
+  // Find which tier today's sales should target
   const todayKey = dateKey(new Date());
   const todaySales = entries[todayKey] || 0;
+
+  // Pick the lowest tier whose daily average hasn't been met yet today
+  let activeTier = TIERS[0];
+  for(let i = 0; i < TIERS.length; i++){
+    const dailyTargetNet = TIERS[i].target / totalDaysInMonth;
+    const todaySalesNet  = todaySales / VAT;
+    if(todaySalesNet < dailyTargetNet){ activeTier = TIERS[i]; break; }
+    if(i === TIERS.length - 1) activeTier = null; // all tiers cleared
+  }
+
+  const DAILY_TARGET_GROSS = activeTier
+    ? Math.round((activeTier.target / totalDaysInMonth) * VAT)
+    : Math.round((TIERS[TIERS.length-1].target / totalDaysInMonth) * VAT);
+
+  // Update label with active tier name
+  const labelEl = document.getElementById('team-todayLabel2');
+  if(labelEl){
+    labelEl.textContent = activeTier
+      ? `נשאר ליעד היומי — ${activeTier.label}`
+      : 'עברתם את כל היעדים היומיים! 🏆';
+  }
+
+  document.getElementById('team-todayTarget').textContent = fmt(DAILY_TARGET_GROSS) + ' ₪';
 
   const pct = Math.min(100, Math.round((todaySales / DAILY_TARGET_GROSS) * 100));
   const remain = Math.max(0, DAILY_TARGET_GROSS - todaySales);
